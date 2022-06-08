@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  deegree:
+    build:
+        context: ../
+        dockerfile: docker_prod_inside/Dockerfile
+    image: deegree-inspire:prod
+    container_name: deegree-inspire
+    ports:
+      - 8084:8080
+    environment:
+      - CONSOLE_PASSWORD=
+      - WORKSPACE=deegree_workspace_inspire
+    restart: always
+    

@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  deegree:
+    build:
+        context: ../
+        dockerfile: docker_dev/Dockerfile
+    image: deegree-inspire:dev
+    container_name: deegree-inspire
+    volumes:
+      - /tmp/deegree-docker/workspaces:/root/.deegree:rw
+    ports:
+      - 8084:8080
+    environment:
+      - CONSOLE_PASSWORD=
+    restart: always

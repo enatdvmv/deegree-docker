@@ -1,0 +1,22 @@
+version: '3.8'
+
+volumes:
+  vol_inspire:
+    external: true
+
+services:
+  deegree:
+    build:
+        context: ../
+        dockerfile: docker_prod_volume/Dockerfile
+    image: deegree-inspire:prod
+    container_name: deegree-inspire
+    volumes:
+      - vol_inspire:/root/.deegree:rw
+    ports:
+      - 8084:8080
+    environment:
+      - CONSOLE_PASSWORD=
+      - WORKSPACE=deegree_workspace_inspire
+    restart: always
+    
