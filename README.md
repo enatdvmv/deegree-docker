@@ -81,7 +81,7 @@ Alternativ kann dies auch separat über Docker-Kommandos erfolgen oder eine ange
 ```
 cd docker_dev
 docker image build -t deegree-inspire:dev ./
-docker run -d --name deegree-inspire -v ~/ deegree-docker /workspaces/:/root/.deegree -p 8084:8080 deegree-inspire:dev
+docker run -d --name deegree-inspire -v ~/deegree-docker/workspaces/:/root/.deegree -p 8084:8080 deegree-inspire:dev
 ```
 
 Die deegree Webservices Console könnten wir nun über http://host:8084/deegree-webservices/ erreichen.
@@ -143,4 +143,4 @@ Der Vorteil gegenüber Variant 1 ist der, dass nicht bei jeder Änderung an den 
 
 
 ## Summary
-In diesem Repository haben wir erste Erfahrungen gesammelt, wie wir deegree Webservices in Docker Containern betreiben können. Produktiv könnte das Docker-Image über eine Jenkins Pipeline gebaut und in einem Artifactory gespeichert werden. Und die Container in einem Kubernetes-Cluster ausgeführt werden.
+In diesem Repository haben wir erste Erfahrungen gesammelt wie wir deegree Webservices in Docker Containern betreiben können. Produktiv könnte das Docker-Image über eine Jenkins Pipeline gebaut und in einem Artifactory gespeichert werden. Und die Container in einem Kubernetes-Cluster ausgeführt werden.
