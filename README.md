@@ -10,7 +10,6 @@ deegree in Docker-Containern
 * [deegree Docker Prod-Umgebung](#deegree-docker-prod-umgebung)
 * [Summary](#summary)
 
-- - -
 
 ## Einleitung
 Mit diesem Repository wollen wir erste Erfahrungen mit deegree WebServices in Docker Container sammeln. Es enthält Docker spezifische Dateien *(Dockerfile, docker-compose.yml)* für das Dev-System sowie zur Simulation eines Prod-Systems. Der deegree Workspace enthält einen View- und einen Download-Service zum INSPIRE Thema GovernmentalService.
