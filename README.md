@@ -92,7 +92,7 @@ Die deegree Webservices Console könnten wir nun über http://host:8084/deegree-
 ## deegree Docker Prod-Umgebung
 In diesem Kapitel wollen wir den Ablauf auf einem produktiven System simulieren. Auch hier klonen wir zunächst das Git-Repository auf unseren Host und passen die Connection-Files an. Wir werden i.d.F. aber kein *bind mount* vornehmen, sondern zwei andere Varianten ausprobieren. Im ersten Fall wird der deegree Workspace in den Container mit verpackt und im zweiten Fall verwenden wir ein Docker *volume mount*.
 
-In der Produktion müssen die 3 Dateien unter [prod](prod) an der richtigen Stelle platziert werden. Das passiert alles im Dockerfile. Die Datei [main.xml](prod/main.xml) wird dabei in den deegree Workspace kopiert, während die *rewrite.config* und die *context.xml* im Tomcat zu platzieren sind. Im Dockerfile wird das war-File deshalb zunächst unter */tmp* gespeichert, entpackt und um die beiden Dateien ergänzt. Dann wird der Ordner *deegree-webservices* in den Tomcat verschoben. Einziger Nachteil an diesem Umweg ist der, dass das Image ca. 200 MB größer wird. Der deegree Workspace wird beim Image-Bau aus dem *Context* kopiert, könnte alternativ im Dockerfile auch vom Remote Git-Repository gezogen werden.
+In der Produktion müssen die 3 Dateien unter [prod](prod) an der richtigen Stelle platziert werden. Das passiert alles im Dockerfile. Die Datei *main.xml* wird dabei in den deegree Workspace kopiert, während die *rewrite.config* und die *context.xml* im Tomcat zu platzieren sind. Im Dockerfile wird das war-File deshalb zunächst unter */tmp* gespeichert, entpackt und um die beiden Dateien ergänzt. Dann wird der Ordner *deegree-webservices* in den Tomcat verschoben. Einziger Nachteil an diesem Umweg ist der, dass das Image ca. 200 MB größer wird. Der deegree Workspace wird beim Image-Bau aus dem *Context* kopiert, könnte alternativ im Dockerfile auch vom Remote Git-Repository gezogen werden.
 
 ### Fall 1: Workspace im Container
 [Dockerfile](docker_prod_inside/Dockerfile) und [docker-compose.yml](docker_prod_inside/docker-compose.yml) unter *docker_prod_inside* sind komplett.
@@ -129,8 +129,8 @@ docker run -d --name deegree-inspire -v vol_inspire:/root/.deegree -p 8084:8080 
 Jetzt kopieren wir den deegree Workspace über den Container in das gemountete Docker Volume.
 ```
 docker cp /tmp/degree-docker/workspaces/deegree_workspace_inspire/ deegree-inspire:/root/.deegree/
-docker cp / tmp/degree-docker/workspaces/webapps.properties deegree-inspire:/root/.deegree/
-docker cp / tmp/degree-docker/prod/main.xml deegree-inspire:/root/.deegree/deegree_workspace_inspire/services/main.xml
+docker cp /tmp/degree-docker/workspaces/webapps.properties deegree-inspire:/root/.deegree/
+docker cp /tmp/degree-docker/prod/main.xml deegree-inspire:/root/.deegree/deegree_workspace_inspire/services/main.xml
 ```
 Und starten den Container neu.
 ```

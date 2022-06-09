@@ -3,7 +3,7 @@
 
 FROM tomcat:9-jdk8
 
-LABEL maintainer="deegree TMC <tmc@deegree.org> changed by DVZ"
+LABEL maintainer="deegree TMC <tmc@deegree.org> changed by ..."
 
 # set deegree version
 ENV DEEGREE_VERSION=3.4.23
