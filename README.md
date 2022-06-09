@@ -51,7 +51,7 @@ Die Daten, hier die deegree Konfigurations-Dateien, wollen wir natürlich nicht 
 docker stop deegree
 docker rm deegree
 
-cd $HOME
+cd
 mkdir deegree/workspaces
 docker run -d --name deegree -v ~/deegree/workspaces/:/root/.deegree -p 8081:8080 deegree/deegree3-docker
 ```
@@ -128,9 +128,9 @@ docker run -d --name deegree-inspire -v vol_inspire:/root/.deegree -p 8084:8080 
 ```
 Jetzt kopieren wir den deegree Workspace über den Container in das gemountete Docker Volume.
 ```
-docker cp /tmp/degree-docker/workspaces/deegree_workspace_inspire/ deegree-inspire:/root/.deegree/
-docker cp /tmp/degree-docker/workspaces/webapps.properties deegree-inspire:/root/.deegree/
-docker cp /tmp/degree-docker/prod/main.xml deegree-inspire:/root/.deegree/deegree_workspace_inspire/services/main.xml
+docker cp /home/user/degree-docker/workspaces/deegree_workspace_inspire/ deegree-inspire:/root/.deegree/
+docker cp /home/user/degree-docker/workspaces/webapps.properties deegree-inspire:/root/.deegree/
+docker cp /home/user/degree-docker/prod/main.xml deegree-inspire:/root/.deegree/deegree_workspace_inspire/services/main.xml
 ```
 Und starten den Container neu.
 ```
