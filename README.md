@@ -145,4 +145,4 @@ Der Vorteil gegenüber Variant 1 ist der, dass nicht bei jeder Änderung an den 
 
 
 ## Ausblick
-In diesem Repository haben wir erste Erfahrungen gesammelt wie wir deegree Webservices in Docker Containern betreiben können. Produktiv könnte das Docker-Image über eine Jenkins-Pipeline gebaut und in einem Artifactory gespeichert werden. Und die Container in einem Kubernetes-Cluster ausgeführt werden, wie im Repository [deegree-kubernates](https://github.com/enatdvmv/deegree-docker) beschrieben.
+In diesem Repository haben wir erste Erfahrungen gesammelt wie wir deegree Webservices in Docker Containern betreiben können. Produktiv könnte das Docker-Image über eine Jenkins-Pipeline gebaut und in einem Artifactory gespeichert werden. Und die Container in einem Kubernetes-Cluster ausgeführt werden, wie im Repository [deegree-kubernates](https://github.com/enatdvmv/deegree-kubernetes) beschrieben.
