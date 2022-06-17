@@ -8,7 +8,7 @@ deegree in Docker-Containern
 * [deegree Docker Einführung](#deegree-docker-einführung)
 * [deegree Docker Dev-Umgebung](#deegree-docker-dev-umgebung)
 * [deegree Docker Prod-Umgebung](#deegree-docker-prod-umgebung)
-* [Summary](#summary)
+* [Ausblick](#ausblick)
 
 
 ## Einleitung
@@ -37,8 +37,10 @@ docker ps -a
 docker image ls
 
 docker exec containerId ls -l  /root/.deegree
+
 docker exec -it containerId  '/bin/bash'
 cd /root/.deegree
+ls -l
 exit
 ```
 Und ein Blick auf die Log-Files.
@@ -55,7 +57,7 @@ cd
 mkdir deegree/workspaces
 docker run -d --name deegree -v ~/deegree/workspaces/:/root/.deegree -p 8081:8080 deegree/deegree3-docker
 ```
-…
+Bisher haben wir aber noch keinen Workspace und damit keine WebServices angelegt. Dazu kommen wie jetzt im nächsten Kapitel.
 
 
 ## deegree Docker Dev-Umgebung
@@ -67,7 +69,7 @@ cd
 git clone https://github.com/enatdvmv/deegree-docker.git
 cd deegree-docker
 ```
-Und überschreiben die Connection-Files unter [workspaces/deegree_workspace_inspire/jdbc/](workspaces/deegree_workspace_inspire/jdbc) mit den Dev-Einstellungen *(Url, User, Password )*. Diese Änderungen dürfen natürlich nicht zurück in das Remote Git-Repository.
+Und überschreiben das [Connection-File](workspaces/deegree_workspace_inspire/jdbc/db.xml) mit den Dev-Einstellungen *(Host, User, Password )*. Diese Änderungen dürfen natürlich nicht zurück in das Remote Git-Repository.
 
 Das [Dockerfile](docker_dev/Dockerfile) unter *docker_dev* ist komplett. Im [docker-compose.yml](docker_dev/docker-compose.yml) passen wird unter *volumes* noch den Pfad zu unserem lokalen Workspace an.
 
@@ -92,7 +94,7 @@ Die deegree Webservices Console könnten wir nun über http://host:8084/deegree-
 ## deegree Docker Prod-Umgebung
 In diesem Kapitel wollen wir den Ablauf auf einem produktiven System simulieren. Auch hier klonen wir zunächst das Git-Repository auf unseren Host und passen die Connection-Files an. Wir werden i.d.F. aber kein *bind mount* vornehmen, sondern zwei andere Varianten ausprobieren. Im ersten Fall wird der deegree Workspace in den Container mit verpackt und im zweiten Fall verwenden wir ein Docker *volume mount*.
 
-In der Produktion müssen die 3 Dateien unter [prod](prod) an der richtigen Stelle platziert werden. Das passiert alles im Dockerfile. Die Datei *main.xml* wird dabei in den deegree Workspace kopiert, während die *rewrite.config* und die *context.xml* im Tomcat zu platzieren sind. Im Dockerfile wird das war-File deshalb zunächst unter */tmp* gespeichert, entpackt und um die beiden Dateien ergänzt. Dann wird der Ordner *deegree-webservices* in den Tomcat verschoben. Einziger Nachteil an diesem Umweg ist der, dass das Image ca. 200 MB größer wird. Der deegree Workspace wird beim Image-Bau aus dem *Context* kopiert, könnte alternativ im Dockerfile auch vom Remote Git-Repository gezogen werden.
+In der Produktion müssen die 3 Dateien unter [prod](prod) an der richtigen Stelle platziert werden. Das passiert alles im Dockerfile. Die Datei *main.xml* wird dabei in den deegree Workspace kopiert, während die *rewrite.config* und die *context.xml* im Tomcat zu platzieren sind. Im Dockerfile wird das war-File deshalb zunächst unter */tmp* gespeichert, entpackt und um die beiden Dateien ergänzt. Dann wird der Ordner *deegree-webservices* in den Tomcat verschoben. Einziger Nachteil an diesem Umweg ist der, dass das Image ca. 200 MB größer wird. Der deegree Workspace wird beim Image-Bau aus dem *Docker Context* kopiert, könnte alternativ im Dockerfile auch vom Remote Git-Repository gezogen werden.
 
 ### Fall 1: Workspace im Container
 [Dockerfile](docker_prod_inside/Dockerfile) und [docker-compose.yml](docker_prod_inside/docker-compose.yml) unter *docker_prod_inside* sind komplett.
@@ -112,7 +114,7 @@ Nachteilig an dieser Vorgehensweise ist, dass bei jeder Änderung an den deegree
 ### Fall 2: Volume mount
 [Dockerfile](docker_prod_volume/Dockerfile) und [docker-compose.yml](docker_prod_volume/docker-compose.yml) unter *docker_prod_volume* sind komplett.
 
-Bei diesem Ansatz erstellen wir zunächst ein Docker Volume. Dieses Volume wir von Docker gemanagt. Wir sollten also nicht direkt Daten in den physischen Speicherort schreiben sondern dies nur über einen Container tun.
+Bei diesem Ansatz erstellen wir zunächst ein Docker Volume. Dieses Volume wird von Docker gemanagt. Wir sollten also nicht direkt Daten in den physischen Speicherort schreiben sondern dies nur über einen Container tun.
 ```
 docker volume create vol_inspire
 ```
@@ -139,8 +141,8 @@ docker restart deegree-inspire
 
 Die deegree Webservices Console könnten wir nun über http://host:8084/deegree-webservices/ erreichen.
 
-Der Vorteil gegenüber Variant 1 ist der, dass nicht bei jeder Änderung an den deegree Diensten ein neues Image gebaut werden muss. Dafür muss man sich Gedanken über eine Aktualisierungsstrategie des Docker Volume machen. Bei jeder Änderung das Docker Volume neu erstellen oder mit einem Change Detector die Änderungen erkennen und die entsprechenden Daten über den Container aktualisieren *(Add, Delete, Update)*?
+Der Vorteil gegenüber Variant 1 ist der, dass nicht bei jeder Änderung an den deegree Diensten ein neues Image gebaut werden muss. Dafür muss man sich Gedanken über eine Aktualisierungsstrategie des Docker Volume machen.
 
 
-## Summary
-In diesem Repository haben wir erste Erfahrungen gesammelt wie wir deegree Webservices in Docker Containern betreiben können. Produktiv könnte das Docker-Image über eine Jenkins Pipeline gebaut und in einem Artifactory gespeichert werden. Und die Container in einem Kubernetes-Cluster ausgeführt werden.
+## Ausblick
+In diesem Repository haben wir erste Erfahrungen gesammelt wie wir deegree Webservices in Docker Containern betreiben können. Produktiv könnte das Docker-Image über eine Jenkins-Pipeline gebaut und in einem Artifactory gespeichert werden. Und die Container in einem Kubernetes-Cluster ausgeführt werden, wie im Repository [deegree-kubernates](https://github.com/enatdvmv/deegree-docker) beschrieben.

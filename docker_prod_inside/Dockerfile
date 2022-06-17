@@ -27,7 +27,7 @@ RUN mv /tmp/deegree-webservices/ /usr/local/tomcat/webapps/ && \
 RUN cd /root && \
     mkdir .deegree
 
-COPY workspaces/${WORKSPACE}/ /root/.deegree/
+COPY workspaces/${WORKSPACE} /root/.deegree/
 COPY workspaces/webapps.properties /root/.deegree/webapps.properties
 COPY prod/main.xml /root/.deegree/deegree_workspace_inspire/services/main.xml
 
